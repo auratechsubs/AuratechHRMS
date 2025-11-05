@@ -5,7 +5,7 @@ import '../../shared/widgets/primary_button.dart';
 import '../controllers/attendance_controller.dart';
 import '../models/attendance_models.dart';
 
-/// MarkAttendanceSheet एक केंद्रित स्क्रीन प्रदान करता है जहां पंच प्रक्रियाएँ दिखाई देती हैं।
+
 class MarkAttendanceSheet extends StatelessWidget {
   const MarkAttendanceSheet({super.key});
 
@@ -91,7 +91,7 @@ class MarkAttendanceSheet extends StatelessWidget {
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18),
-        color: enabled ? colorScheme.surfaceVariant.withOpacity(0.3) : null,
+        color: enabled ? colorScheme.surfaceContainerHighest.withOpacity(0.3) : null,
         border: Border.all(color: colorScheme.outline.withOpacity(0.2)),
       ),
       child: Row(

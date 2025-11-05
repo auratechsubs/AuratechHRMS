@@ -5,6 +5,7 @@ import 'app/localization/app_translations.dart';
 import 'app/routes/app_pages.dart';
 import 'app/routes/app_routes.dart';
 import 'app/theme/app_theme.dart';
+import 'modules/admin/controllers/admin_shell_controller.dart';
 import 'modules/auth/controllers/auth_controller.dart';
 import 'modules/attendance/controllers/attendance_controller.dart';
 import 'modules/profile/controllers/profile_controller.dart';
@@ -38,6 +39,7 @@ Future<void> main() async {
   /// आवश्यक कंट्रोलर रजिस्टर करें।
   Get.put<AuthController>(AuthController(storageService));
   Get.put<ProfileController>(ProfileController(storageService));
+  Get.put<AdminShellController>(AdminShellController());
   Get.put<AttendanceController>(
     AttendanceController(
       storageService: storageService,

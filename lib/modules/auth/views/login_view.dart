@@ -25,11 +25,15 @@ class LoginView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('app_title'.tr,
-                    style: Theme.of(context).textTheme.displayLarge),
+                Text(
+                  'app_title'.tr,
+                  style: Theme.of(context).textTheme.displayLarge,
+                ),
                 const SizedBox(height: 12),
-                Text('login_welcome'.tr,
-                    style: Theme.of(context).textTheme.bodyMedium),
+                Text(
+                  'login_welcome'.tr,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
                 const SizedBox(height: 32),
                 TextField(
                   controller: _identifierController,
@@ -70,14 +74,15 @@ class LoginView extends StatelessWidget {
                           label: 'send_otp'.tr,
                           onPressed: () {
                             controller.submitIdentifier(
-                                _identifierController.text);
+                              _identifierController.text,
+                            );
                           },
                           icon: Icons.sms,
                         ),
                 ),
                 const SizedBox(height: 20),
                 TextButton.icon(
-                  onPressed: () => Get.toNamed(AppRoutes.adminShell),
+                  onPressed: () => _showAdminLoginDialog(context),
                   icon: const Icon(Icons.desktop_windows_outlined),
                   label: const Text('Admin console'),
                 ),
@@ -104,6 +109,104 @@ class LoginView extends StatelessWidget {
                         ),
                       ),
                     ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showAdminLoginDialog(BuildContext context) {
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'Admin Login',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                ),
+                const SizedBox(height: 20),
+
+                // Email field
+                TextFormField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                    labelText: 'Admin Email',
+                    prefixIcon: Icon(Icons.email_outlined),
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter email';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 12),
+
+                // Password field
+                TextFormField(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    prefixIcon: Icon(Icons.lock_outline),
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter password';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+
+                // Login button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    icon: const Icon(Icons.login),
+                    label: const Text('Login'),
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        final email = emailController.text.trim();
+                        final pass = passwordController.text.trim();
+
+                        if (email == 'admin@gmail.com' && pass == '123456') {
+                          Get.back(); // close dialog
+                          Get.snackbar(
+                            'Login Successful',
+                            'Welcome Admin!',
+                            backgroundColor: Colors.green.shade100,
+                            colorText: Colors.black,
+                            snackPosition: SnackPosition.BOTTOM,
+                          );
+                          Get.offAllNamed(AppRoutes.adminShell);
+                        } else {
+                          Get.snackbar(
+                            'Login Failed',
+                            'Invalid credentials',
+                            backgroundColor: Colors.red.shade100,
+                            colorText: Colors.black,
+                            snackPosition: SnackPosition.BOTTOM,
+                          );
+                        }
+                      }
+                    },
                   ),
                 ),
               ],

@@ -12,4 +12,13 @@ abstract class AppRoutes {
   static const String requests = '/requests';
   static const String reports = '/reports';
   static const String profile = '/profile';
+  static const String AdminTeamView = '/AdminTeamView';
+  static const String interns = '/interns';
+  static const String tasks = '/tasks';
+  static const String attendence = '/attendence';
+  static const String payroll = '/payroll';
+  static const String performance = '/performance';
+  static const String documents = '/documents';
+  static const String adminreportsview = '/adminreportsview';
+  static const String adminseting = '/adminseting';
 }

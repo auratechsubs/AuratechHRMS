@@ -18,42 +18,46 @@ class PermissionsView extends StatelessWidget {
       appBar: AppBar(title: Text('permissions_title'.tr)),
       body: Padding(
         padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'बायोमेट्रिक और लोकेशन परमिशन्स ऑन करने से प्रॉक्सि कम होती है।',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 24),
-            _permissionTile(
-              context,
-              title: 'Location',
-              description:
-                  'Geo-fence 100m के भीतर रहने पर ही पंच की अनुमति मिलेगी।',
-              state: location,
-            ),
-            _permissionTile(
-              context,
-              title: 'Camera & Face',
-              description:
-                  'Face ID कैप्चर से सुरक्षा बढ़ती है। ऑटो ऑन-डिवाइस प्रोसेसिंग।',
-              state: camera,
-            ),
-            _permissionTile(
-              context,
-              title: 'Notifications',
-              description:
-                  'लेट कटऑफ व ऑटो चेकआउट रिमाइंडर समय पर भेजे जाएंगे।',
-              state: notifications,
-            ),
-            const Spacer(),
-            PrimaryButton(
-              label: 'verify'.tr,
-              icon: Icons.check_circle_outline,
-              onPressed: () => Get.offAllNamed(AppRoutes.employeeShell),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 50,),
+              Text(
+                'बायोमेट्रिक और लोकेशन परमिशन्स ऑन करने से प्रॉक्सि कम होती है।',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              const SizedBox(height: 24),
+              _permissionTile(
+                context,
+                title: 'Location',
+                description:
+                'Geo-fence 100m के भीतर रहने पर ही पंच की अनुमति मिलेगी।',
+                state: location,
+              ),
+              _permissionTile(
+                context,
+                title: 'Camera & Face',
+                description:
+                'Face ID कैप्चर से सुरक्षा बढ़ती है। ऑटो ऑन-डिवाइस प्रोसेसिंग।',
+                state: camera,
+              ),
+              _permissionTile(
+                context,
+                title: 'Notifications',
+                description:
+                'लेट कटऑफ व ऑटो चेकआउट रिमाइंडर समय पर भेजे जाएंगे।',
+                state: notifications,
+              ),
+              const SizedBox(height: 20),
+              PrimaryButton(
+                label: 'verify'.tr,
+                icon: Icons.check_circle_outline,
+                onPressed: () => Get.offAllNamed(AppRoutes.employeeShell),
+              ),
+            ],
+          ),
         ),
       ),
     );

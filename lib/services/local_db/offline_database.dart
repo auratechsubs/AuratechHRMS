@@ -8,32 +8,58 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../modules/attendance/models/attendance_models.dart';
 
+/// ========================
+/// INTERNAL DRIFT STUB DB
+/// ========================
+/// Ye chhota sa GeneratedDatabase hai jise hum sirf isliye use kar rahe hain
+/// taaki executor ko properly `ensureOpen()` kar sakein. Isme koi tables
+/// declare nahi ki ja rahi — schema hum raw SQL se bana rahe hain.
+class _StubDb extends GeneratedDatabase {
+  _StubDb(super.e);
+  @override
+  int get schemaVersion => 1;
+  @override
+  Iterable<TableInfo<Table, dynamic>> get allTables => const <TableInfo<Table, dynamic>>[];
+}
+
 /// Drift आधारित लोकल डेटाबेस जो ऑफ़लाइन पेंडिंग इवेंट्स को स्टोर करता है।
+/// Public API SAME hai (methods/namings unchanged).
 class OfflineDatabase {
-  OfflineDatabase._(this._executor);
+  OfflineDatabase._(this._executor) : _db = _StubDb(_executor);
 
   final QueryExecutor _executor;
+  final _StubDb _db; // ensureOpen ke liye internal stub DB
 
   /// डिफ़ॉल्ट फ़ाइल आधारित डेटाबेस खोलना।
   static Future<OfflineDatabase> open() async {
     final Directory dir = await getApplicationDocumentsDirectory();
     final File file = File(p.join(dir.path, 'attendance_offline.sqlite'));
+
     final QueryExecutor executor = NativeDatabase(file, logStatements: false);
     final OfflineDatabase database = OfflineDatabase._(executor);
+
+    // IMPORTANT: Drift executor ko ek baar properly open karo
+    await database._executor.ensureOpen(database._db);
+
+    // Schema ensure karo
     await database._createSchema();
     return database;
   }
 
-  /// इन-मेमोरी डेटाबेस जो यूनिट टेस्ट में सहायक है।
+  /// इन-मेमोरी डेटाबेस (tests ke liye).
   static Future<OfflineDatabase> openInMemory() async {
     final QueryExecutor executor = NativeDatabase.memory(logStatements: false);
     final OfflineDatabase database = OfflineDatabase._(executor);
+
+    await database._executor.ensureOpen(database._db);
     await database._createSchema();
     return database;
   }
 
+  /// Schema create/ensure (RAW SQL same rakha gaya hai)
   Future<void> _createSchema() async {
-    await _executor.runCustom('''
+    // Prefer stub DB ki customStatement — executor open guaranteed.
+    await _db.customStatement('''
       CREATE TABLE IF NOT EXISTS pending_events (
         id TEXT PRIMARY KEY,
         employee_id TEXT NOT NULL,
@@ -45,20 +71,23 @@ class OfflineDatabase {
 
   /// सभी पेंडिंग इवेंट्स को लोड करें।
   Future<List<PendingAttendanceEvent>> loadPendingEvents() async {
+    // Executor ab open hai, runSelect safe hai.
     final List<Map<String, Object?>> rows = await _executor.runSelect(
       'SELECT id, employee_id, payload, created_at FROM pending_events ORDER BY created_at ASC',
       const <Object?>[],
     );
+
     return rows
-        .map((Map<String, Object?> row) => PendingAttendanceEvent(
-              id: row['id']! as String,
-              employeeId: row['employee_id']! as String,
-              day: AttendanceDay.fromJson(
-                jsonDecode(row['payload']! as String) as Map<String, dynamic>,
-              ),
-              createdAt:
-                  DateTime.fromMillisecondsSinceEpoch(row['created_at']! as int),
-            ))
+        .map((row) => PendingAttendanceEvent(
+      id: row['id']! as String,
+      employeeId: row['employee_id']! as String,
+      day: AttendanceDay.fromJson(
+        jsonDecode(row['payload']! as String) as Map<String, dynamic>,
+      ),
+      createdAt: DateTime.fromMillisecondsSinceEpoch(
+        row['created_at']! as int,
+      ),
+    ))
         .toList();
   }
 

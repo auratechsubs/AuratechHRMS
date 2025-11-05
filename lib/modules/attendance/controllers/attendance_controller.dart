@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
 
@@ -118,6 +117,8 @@ class AttendanceController extends GetxController {
   }
 
   Future<void> _persist() async {
+
+
     await _storageService.writeEmployees(employees);
     await _storageService.writeAttendance(_attendance);
     await _storageService.writeRequests(requests);
@@ -126,6 +127,12 @@ class AttendanceController extends GetxController {
 
   /// फेस व फिंगरप्रिंट दोनों की नीतियों के अनुसार जांच।
   Future<bool> _runBiometricChecks(EmployeeModel employee) async {
+    // print('running biometric...');
+    // if (!await _runBiometricChecks(employee));
+    // print('biometric ok');
+    // final day = _ensureTodayRecord(employee);
+    // print('day record: $day');
+
     final policy = _policyService.policy;
     if (policy.faceRequired && !await _faceRecognitionService.captureAndValidateFace()) {
       Get.snackbar('Face', 'चेहरा प्रमाणीकरण विफल रहा।');
@@ -149,6 +156,7 @@ class AttendanceController extends GetxController {
       return;
     }
     final now = DateTime.now();
+    print(now);
     final status = _policyService.resolveStatus(
       checkIn: now,
       shift: employee.shift,
@@ -165,10 +173,11 @@ class AttendanceController extends GetxController {
               ? 'Within grace exceeded'
               : null,
     );
-
+print(updatedDay);
     _replaceDay(employee.id, updatedDay);
+    print('persisting data...');
     await _persist();
-  }
+    print('done persist');  }
 
   Future<void> startBreak() async {
     final employee = primaryEmployee;
@@ -277,8 +286,11 @@ class AttendanceController extends GetxController {
 
   Future<Uint8List?> downloadMisReport() async {
     final employee = primaryEmployee;
+    print(employee);
     if (employee == null) return null;
     final records = _attendance[employee.id] ?? <AttendanceDay>[];
+    print(records);
+
     return _excelExportService.buildMisReport(
       employee: employee,
       records: records,

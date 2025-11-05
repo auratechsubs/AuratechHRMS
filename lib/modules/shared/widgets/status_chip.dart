@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// StatusChip विजेट उपस्थिति स्थिति को रंगीन चिप में दिखाता है।
-class StatusChip extends StatelessWidget {
+ class StatusChip extends StatelessWidget {
   const StatusChip({
     super.key,
     required this.label,

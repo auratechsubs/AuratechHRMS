@@ -119,7 +119,7 @@ class RequestsView extends StatelessWidget {
                 const SizedBox(height: 12),
                 Obx(
                   () => DropdownButtonFormField<String>(
-                    value: _type.value,
+                    initialValue: _type.value,
                     items: const [
                       DropdownMenuItem(
                           value: 'Missed Check-in', child: Text('Missed Check-in')),

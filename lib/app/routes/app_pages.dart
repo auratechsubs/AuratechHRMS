@@ -1,6 +1,14 @@
+import 'package:attendence_management_software/modules/admin/views/Interns.dart';
+import 'package:attendence_management_software/modules/admin/views/documents.dart';
+import 'package:attendence_management_software/modules/admin/views/pages/attendance_view.dart';
+import 'package:attendence_management_software/modules/admin/views/pages/reports_view.dart';
+import 'package:attendence_management_software/modules/admin/views/pages/settings_view.dart';
+import 'package:attendence_management_software/modules/admin/views/payroll.dart';
+import 'package:attendence_management_software/modules/admin/views/performance.dart';
 import 'package:get/get.dart';
 
 import '../../modules/admin/views/admin_shell_view.dart';
+import '../../modules/admin/views/pages/team_view.dart';
 import '../../modules/attendance/views/calendar_view.dart';
 import '../../modules/attendance/views/employee_home_view.dart';
 import '../../modules/attendance/views/mark_attendance_sheet.dart';
@@ -27,5 +35,16 @@ class AppPages {
     GetPage(name: AppRoutes.reports, page: ReportsView.new),
     GetPage(name: AppRoutes.profile, page: ProfileView.new),
     GetPage(name: AppRoutes.adminShell, page: AdminShellView.new),
+    GetPage(name: AppRoutes.AdminTeamView, page: AdminTeamView.new),
+
+    GetPage(name: AppRoutes.interns, page: Interns.new),
+    // GetPage(name: AppRoutes.tasks, page: Tasks.new),
+    GetPage(name: AppRoutes.attendence, page: AdminAttendanceView.new),
+    GetPage(name: AppRoutes.payroll, page: Payroll.new),
+    GetPage(name: AppRoutes.performance, page: Performance.new),
+    GetPage(name: AppRoutes.documents, page: Documents.new),
+
+    GetPage(name: AppRoutes.adminreportsview, page: AdminReportsView.new),
+    GetPage(name: AppRoutes.adminseting, page: AdminSettingsView.new),
   ];
 }
