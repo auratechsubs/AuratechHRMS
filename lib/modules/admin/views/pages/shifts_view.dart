@@ -241,7 +241,7 @@ class AdminShiftsView extends GetView<AdminShellController> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: DropdownButtonFormField<String>(
-                      value: policy,
+                      initialValue: policy,
                       items: const [
                         DropdownMenuItem(value: 'paid', child: Text('Paid')),
                         DropdownMenuItem(value: 'unpaid', child: Text('Unpaid')),
@@ -266,7 +266,11 @@ class AdminShiftsView extends GetView<AdminShellController> {
                   return FilterChip(
                     label: Text(d),
                     selected: sel,
-                    onSelected: (v) { if (v) offs.add(d); else offs.remove(d); },
+                    onSelected: (v) { if (v) {
+                      offs.add(d);
+                    } else {
+                      offs.remove(d);
+                    } },
                   );
                 }).toList(),
               ),

@@ -89,7 +89,7 @@ class _AdminReportsViewState extends State<AdminReportsView> {
               trailing: FilledButton.tonalIcon(
                 onPressed: _openColumnsSheet,
                 icon: const Icon(Icons.tune),
-                label: const Text('Columns'),
+                label: const Text('Advanced Filters'),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -101,6 +101,10 @@ class _AdminReportsViewState extends State<AdminReportsView> {
                     children: [
                       for (final k in _ranges.keys)
                         ChoiceChip(
+                          selectedColor: cs.primary,
+                          labelStyle: TextStyle(
+                            color: _selectedKey == k ? cs.onPrimary : cs.onSurface,
+                          ),
                           label: Text(k),
                           selected: _selectedKey == k,
                           onSelected: (_) {
@@ -302,6 +306,7 @@ class _ReportCard extends StatelessWidget {
                   ),
                 ),
                 FilledButton.tonalIcon(
+                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(cs.primary,),fixedSize: MaterialStateProperty.all(const Size(100, 36)),padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 8)),),
                   onPressed: onExportRow,
                   icon: const Icon(Icons.download_outlined),
                   label: const Text('Export'),
@@ -370,10 +375,10 @@ class _Pill extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 11),
       decoration: BoxDecoration(
-        color: cs.secondaryContainer,
-        borderRadius: BorderRadius.circular(999),
+        color: cs.primary,
+        borderRadius: BorderRadius.circular(12),
       ),
       child: DefaultTextStyle(
         style: TextStyle(color: cs.onSecondaryContainer, fontWeight: FontWeight.w700),
@@ -420,10 +425,10 @@ class _StatusBadge extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 9),
       decoration: BoxDecoration(
         color: bg,
-        borderRadius: BorderRadius.circular(999),
+        borderRadius: BorderRadius.circular(11),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

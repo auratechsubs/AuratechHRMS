@@ -8,6 +8,7 @@ import 'package:attendence_management_software/modules/admin/views/performance.d
 import 'package:get/get.dart';
 
 import '../../modules/admin/views/admin_shell_view.dart';
+import '../../modules/admin/views/pages/office_admin_page.dart';
 import '../../modules/admin/views/pages/team_view.dart';
 import '../../modules/attendance/views/calendar_view.dart';
 import '../../modules/attendance/views/employee_home_view.dart';
@@ -46,5 +47,6 @@ class AppPages {
 
     GetPage(name: AppRoutes.adminreportsview, page: AdminReportsView.new),
     GetPage(name: AppRoutes.adminseting, page: AdminSettingsView.new),
+    GetPage(name: AppRoutes.adminoffice, page: OfficeAdminPage.new),
   ];
 }

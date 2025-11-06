@@ -6,6 +6,7 @@ import 'app/routes/app_pages.dart';
 import 'app/routes/app_routes.dart';
 import 'app/theme/app_theme.dart';
 import 'modules/admin/controllers/admin_shell_controller.dart';
+import 'modules/attendance/controllers/attendance_geo_controller.dart';
 import 'modules/auth/controllers/auth_controller.dart';
 import 'modules/attendance/controllers/attendance_controller.dart';
 import 'modules/profile/controllers/profile_controller.dart';
@@ -40,6 +41,8 @@ Future<void> main() async {
   Get.put<AuthController>(AuthController(storageService));
   Get.put<ProfileController>(ProfileController(storageService));
   Get.put<AdminShellController>(AdminShellController());
+  Get.put(AttendanceGeoController());
+
   Get.put<AttendanceController>(
     AttendanceController(
       storageService: storageService,

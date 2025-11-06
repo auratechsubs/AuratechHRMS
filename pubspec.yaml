@@ -49,6 +49,7 @@ dependencies:
   sqlite3_flutter_libs: ^0.5.24
   file_picker: ^10.3.3
   open_file: ^3.5.10
+  geolocator: ^14.0.2
 
 dev_dependencies:
   flutter_test:

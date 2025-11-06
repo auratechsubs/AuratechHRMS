@@ -1,11 +1,10 @@
 import 'package:get/get.dart';
 
-/// मल्टी-लैंग्वेज सपोर्ट के लिए ट्रांसलेशन क्लास।
-class AppTranslations extends Translations {
+ class AppTranslations extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         'en_US': {
-          'app_title': 'PulseTime Attendance',
+          'app_title': 'Auratech HRMS',
           'login_welcome': 'Welcome back! Please sign in to manage attendance.',
           'email': 'Email or Phone',
           'otp': 'One Time Password',
@@ -38,7 +37,7 @@ class AppTranslations extends Translations {
           'download_excel': 'Download MIS Excel',
         },
         'hi_IN': {
-          'app_title': 'PulseTime उपस्थिति',
+          'app_title': 'Auratech उपस्थिति',
           'login_welcome': 'वापसी पर स्वागत है! हाज़िरी प्रबंधन के लिए साइन इन करें।',
           'email': 'ईमेल या फ़ोन',
           'otp': 'वन टाइम पासवर्ड',

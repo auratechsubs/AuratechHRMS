@@ -7,105 +7,134 @@ import '../../shared/widgets/primary_button.dart';
 import '../../shared/widgets/stat_tile.dart';
 import '../../shared/widgets/status_chip.dart';
 import '../controllers/attendance_controller.dart';
+import '../controllers/attendance_geo_controller.dart';
 import '../models/attendance_models.dart';
 
-  class EmployeeHomeView extends StatelessWidget {
+class EmployeeHomeView extends StatelessWidget {
   EmployeeHomeView({super.key});
 
   final RxInt _navIndex = 0.obs;
+  final AttendanceGeoController geo = Get.find<AttendanceGeoController>();
 
   @override
   Widget build(BuildContext context) {
     final AttendanceController controller = Get.find<AttendanceController>();
 
-    return Obx(
-          () {
-        final employee = controller.primaryEmployee;
-        final day = controller.todayRecord;
+    //  if (geo.offices.isEmpty) {
+    //   geo.addOffice(
+    //     const OfficeLocation(
+    //       id: 'Auratech Office',
+    //       name: 'Head Office',
+    //       latitude: 26.8446026,
+    //       longitude: 75.8117849,
+    //       radiusM: 50,
+    //     ),
+    //   );
+    // }
+    return Obx(() {
+      final employee = controller.primaryEmployee;
+      final day = controller.todayRecord;
 
-        return Scaffold(
-          appBar: AppBar(
-            title: Text('home_today'.tr),
-            elevation: 3,
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.cloud_sync_outlined),
-                tooltip: 'Sync Data',
-                onPressed: controller.queueForSync,
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('home_today'.tr),
+          elevation: 3,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.cloud_sync_outlined),
+              tooltip: 'Sync Data',
+              onPressed: controller.queueForSync,
+            ),
+            IconButton(
+              icon: const Icon(Icons.file_download_outlined),
+              tooltip: 'Download MIS',
+              onPressed: () async {
+                final bytes = await controller.downloadMisReport();
+                if (bytes != null) {
+                  Get.snackbar(
+                    'Excel',
+                    'MIS फाइल तैयार है (डेमो)।',
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                }
+              },
+            ),
+          ],
+        ),
+        bottomNavigationBar: Obx(
+          () => NavigationBar(
+            selectedIndex: _navIndex.value,
+            onDestinationSelected: (index) {
+              _navIndex.value = index;
+              switch (index) {
+                case 0:
+                  break;
+                case 1:
+                  Get.toNamed(AppRoutes.calendar);
+                  break;
+                case 2:
+                  Get.toNamed(AppRoutes.requests);
+                  break;
+                case 3:
+                  Get.toNamed(AppRoutes.reports);
+                  break;
+                case 4:
+                  Get.toNamed(AppRoutes.profile);
+                  break;
+              }
+            },
+            destinations: const [
+              NavigationDestination(
+                icon: Icon(Icons.home_outlined),
+                label: 'Home',
               ),
-              IconButton(
-                icon: const Icon(Icons.file_download_outlined),
-                tooltip: 'Download MIS',
-                onPressed: () async {
-                  final bytes = await controller.downloadMisReport();
-                  if (bytes != null) {
-                    Get.snackbar('Excel', 'MIS फाइल तैयार है (डेमो)।',
-                        snackPosition: SnackPosition.BOTTOM);
-                  }
-                },
+              NavigationDestination(
+                icon: Icon(Icons.calendar_today_outlined),
+                label: 'Calendar',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.inbox_outlined),
+                label: 'Requests',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.bar_chart_outlined),
+                label: 'Reports',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.person_outline),
+                label: 'Profile',
               ),
             ],
           ),
-          bottomNavigationBar: Obx(
-                () => NavigationBar(
-              selectedIndex: _navIndex.value,
-              onDestinationSelected: (index) {
-                _navIndex.value = index;
-                switch (index) {
-                  case 0:
-                    break;
-                  case 1:
-                    Get.toNamed(AppRoutes.calendar);
-                    break;
-                  case 2:
-                    Get.toNamed(AppRoutes.requests);
-                    break;
-                  case 3:
-                    Get.toNamed(AppRoutes.reports);
-                    break;
-                  case 4:
-                    Get.toNamed(AppRoutes.profile);
-                    break;
-                }
-              },
-              destinations: const [
-                NavigationDestination(icon: Icon(Icons.home_outlined), label: 'Home'),
-                NavigationDestination(icon: Icon(Icons.calendar_today_outlined), label: 'Calendar'),
-                NavigationDestination(icon: Icon(Icons.inbox_outlined), label: 'Requests'),
-                NavigationDestination(icon: Icon(Icons.bar_chart_outlined), label: 'Reports'),
-                NavigationDestination(icon: Icon(Icons.person_outline), label: 'Profile'),
-              ],
-            ),
+        ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (employee != null) _buildHeader(context, employee, day),
+              const SizedBox(height: 30),
+              _buildActionCard(context, controller, day),
+              const SizedBox(height: 30),
+              _buildStatsRow(context, controller),
+              const SizedBox(height: 30),
+              _buildAlerts(context, controller),
+              const SizedBox(height: 30),
+              _buildRecentActivity(context, controller),
+              const SizedBox(height: 30),
+              const SizedBox(height: 620, child: MarkAttendanceSheet()),
+            ],
           ),
-          body: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (employee != null) _buildHeader(context, employee, day),
-                const SizedBox(height: 30),
-                _buildActionCard(context, controller, day),
-                const SizedBox(height: 30),
-                _buildStatsRow(context, controller),
-                const SizedBox(height: 30),
-                _buildAlerts(context, controller),
-                const SizedBox(height: 30),
-                _buildRecentActivity(context, controller),
-                const SizedBox(height: 30),
-                const SizedBox(height: 620,child: MarkAttendanceSheet(),)
-              ],
-            ),
-          ),
-        );
-      },
-    );
+        ),
+      );
+    });
   }
 
   Widget _buildHeader(
-      BuildContext context,
-      EmployeeModel employee,
-      AttendanceDay? day,
-      ) {
+    BuildContext context,
+    EmployeeModel employee,
+    AttendanceDay? day,
+  ) {
     final status = day?.status ?? AttendanceStatus.absent;
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -179,7 +208,7 @@ import '../models/attendance_models.dart';
                   ),
                 ),
                 const SizedBox(height: 12),
-                StatusChip(label: statusLabel, color: statusColor, ),
+                StatusChip(label: statusLabel, color: statusColor),
               ],
             ),
           ),
@@ -189,10 +218,10 @@ import '../models/attendance_models.dart';
   }
 
   Widget _buildActionCard(
-      BuildContext context,
-      AttendanceController controller,
-      AttendanceDay? day,
-      ) {
+    BuildContext context,
+    AttendanceController controller,
+    AttendanceDay? day,
+  ) {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
@@ -212,6 +241,31 @@ import '../models/attendance_models.dart';
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Obx(() {
+            final office = geo.nearestOffice.value;
+            final dist = geo.distanceM.value;
+            if (office == null || dist == 0) return const SizedBox.shrink();
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.place_outlined,
+                    color: colorScheme.primary,
+                    size: 18,
+                  ),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      '${office.name} • ${dist.toStringAsFixed(1)} m (limit ${office.radiusM} m) ${office.latitude}  ${office.longitude} ${office.id} )',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }),
+
           Row(
             children: [
               Icon(Icons.access_time, color: colorScheme.primary),
@@ -229,32 +283,71 @@ import '../models/attendance_models.dart';
           const SizedBox(height: 20),
           Row(
             children: [
+              // Expanded(
+              //   child:
+              //   PrimaryButton(
+              //     label: day?.checkIn == null
+              //         ? 'check_in'.tr
+              //         : 'start_break'.tr,
+              //     onPressed: () {
+              //       if (day?.checkIn == null) {
+              //         controller.performCheckIn();
+              //       } else {
+              //         controller.startBreak();
+              //       }
+              //     },
+              //     icon: Icons.login,
+              //   ),
+              // ),
               Expanded(
                 child: PrimaryButton(
-                  label: day?.checkIn == null ? 'check_in'.tr : 'start_break'.tr,
-                  onPressed: () {
+                  label: day?.checkIn == null
+                      ? 'check_in'.tr
+                      : 'start_break'.tr,
+                  onPressed: () async {
                     if (day?.checkIn == null) {
-                      controller.performCheckIn();
+                      // === GEO-FENCE CHECK-IN GUARD ===
+                      final result = await geo.evaluateForCheckIn();
+                      if (result.allowed) {
+                        await controller.performCheckIn();
+                        Get.snackbar(
+                          'Checked-in',
+                          'Distance: ${result.distanceM.toStringAsFixed(1)} m • '
+                              'GPS ±${result.accuracyM.toStringAsFixed(0)} m',
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
+                      } else {
+                        Get.snackbar(
+                          'Outside Geofence',
+                          result.error ?? 'Check-in not allowed.',
+                          backgroundColor: Colors.red.shade600,
+                          colorText: Colors.white,
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
+                      }
                     } else {
+                      // Already checked-in → ye button Start Break kaam karega
                       controller.startBreak();
                     }
                   },
                   icon: Icons.login,
                 ),
               ),
+
               const SizedBox(width: 15),
               Expanded(
                 child: PrimaryButton(
                   label: day?.checkOut == null
                       ? (day?.breaks.isNotEmpty == true &&
-                      day?.breaks.last.end == null
-                      ? 'end_break'.tr
-                      : 'check_out'.tr)
+                                day?.breaks.last.end == null
+                            ? 'end_break'.tr
+                            : 'check_out'.tr)
                       : 'check_out'.tr,
                   onPressed: () {
                     if (day == null) {
                       controller.performCheckIn();
-                    } else if (day.breaks.isNotEmpty && day.breaks.last.end == null) {
+                    } else if (day.breaks.isNotEmpty &&
+                        day.breaks.last.end == null) {
                       controller.endBreak();
                     } else if (day.checkOut == null) {
                       controller.performCheckOut();
@@ -268,24 +361,23 @@ import '../models/attendance_models.dart';
           const SizedBox(height: 14),
           Text(
             'half_day_after'.tr,
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall
-                ?.copyWith(color: colorScheme.tertiary),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: colorScheme.tertiary),
           ),
           if (day?.autoCheckoutApplied == true) ...[
             const SizedBox(height: 10),
-            Text('auto_checkout_info'.tr, style: Theme.of(context).textTheme.bodySmall),
+            Text(
+              'auto_checkout_info'.tr,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
           ],
         ],
       ),
     );
   }
 
-  Widget _buildStatsRow(
-      BuildContext context,
-      AttendanceController controller,
-      ) {
+  Widget _buildStatsRow(BuildContext context, AttendanceController controller) {
     final day = controller.todayRecord;
     final totalWork = day?.totalWorkDuration ?? Duration.zero;
     final totalBreak = day?.totalBreakDuration ?? Duration.zero;
@@ -296,7 +388,7 @@ import '../models/attendance_models.dart';
           child: StatTile(
             title: 'Total Work',
             value:
-            '${totalWork.inHours}h ${(totalWork.inMinutes % 60).toString().padLeft(2, '0')}m',
+                '${totalWork.inHours}h ${(totalWork.inMinutes % 60).toString().padLeft(2, '0')}m',
             icon: Icons.timer_outlined,
           ),
         ),
@@ -305,7 +397,7 @@ import '../models/attendance_models.dart';
           child: StatTile(
             title: 'Break Time',
             value:
-            '${totalBreak.inHours}h ${(totalBreak.inMinutes % 60).toString().padLeft(2, '0')}m',
+                '${totalBreak.inHours}h ${(totalBreak.inMinutes % 60).toString().padLeft(2, '0')}m',
             icon: Icons.free_breakfast_outlined,
             color: Theme.of(context).colorScheme.secondary,
           ),
@@ -320,29 +412,43 @@ import '../models/attendance_models.dart';
     final cutoff = controller.primaryEmployee?.shift.start;
 
     // Alert condition: Near cutoff time within 10 min window
-    final bool nearCutoff = cutoff != null &&
+    final bool nearCutoff =
+        cutoff != null &&
         now.hour == cutoff.hour &&
         now.minute >= cutoff.minute - 10;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Smart Alerts',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              letterSpacing: 0.3,
-            )),
+        Text(
+          'Smart Alerts',
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.3,
+          ),
+        ),
         const SizedBox(height: 14),
         if (day?.checkIn == null && nearCutoff)
-          _alertCard(context, icon: Icons.alarm, message: 'You’re nearing 10:30 AM cutoff.'),
+          _alertCard(
+            context,
+            icon: Icons.alarm,
+            message: 'You’re nearing 10:30 AM cutoff.',
+          ),
         if (day?.checkOut == null)
-          _alertCard(context, icon: Icons.logout, message: 'Remember to check-out before 8:00 PM.'),
+          _alertCard(
+            context,
+            icon: Icons.logout,
+            message: 'Remember to check-out before 8:00 PM.',
+          ),
       ],
     );
   }
 
-  Widget _alertCard(BuildContext context,
-      {required IconData icon, required String message}) {
+  Widget _alertCard(
+    BuildContext context, {
+    required IconData icon,
+    required String message,
+  }) {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
@@ -358,10 +464,7 @@ import '../models/attendance_models.dart';
           Icon(icon, color: colorScheme.tertiary),
           const SizedBox(width: 15),
           Expanded(
-            child: Text(
-              message,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
+            child: Text(message, style: Theme.of(context).textTheme.bodyMedium),
           ),
         ],
       ),
@@ -369,7 +472,9 @@ import '../models/attendance_models.dart';
   }
 
   Widget _buildRecentActivity(
-      BuildContext context, AttendanceController controller) {
+    BuildContext context,
+    AttendanceController controller,
+  ) {
     final day = controller.todayRecord;
     final checkIn = day?.checkIn;
     final checkOut = day?.checkOut;
@@ -389,28 +494,35 @@ import '../models/attendance_models.dart';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Recent Activity',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              letterSpacing: 0.3,
-            )),
+        Text(
+          'Recent Activity',
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.3,
+          ),
+        ),
         const SizedBox(height: 14),
         ...items.map(
-              (item) => Card(
+          (item) => Card(
             elevation: 2,
 
             margin: const EdgeInsets.only(bottom: 12),
 
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
-              side: BorderSide(color:    ColorScheme.of(context).primary
-    ,
-    )
+              side: BorderSide(color: ColorScheme.of(context).primary),
             ),
             child: ListTile(
-              leading: const Icon(Icons.fiber_manual_record, size: 14, color: Colors.blueAccent),
+              leading: const Icon(
+                Icons.fiber_manual_record,
+                size: 14,
+                color: Colors.blueAccent,
+              ),
               title: Text(item),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 10,
+              ),
             ),
           ),
         ),

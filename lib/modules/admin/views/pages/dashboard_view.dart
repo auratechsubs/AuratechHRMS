@@ -492,142 +492,7 @@ class AdminDashboardView extends GetView<AdminShellController> {
   }
 }
 
-/// --------------------------
-/// Drawer (single icon behavior)
-/// --------------------------
-// class _AppDrawer extends StatelessWidget {
-//   const _AppDrawer();
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     Widget item(IconData icon, String title, {VoidCallback? onTap, bool selected = false}) {
-//       return Padding(
-//         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-//         child: InkWell(
-//           borderRadius: BorderRadius.circular(12),
-//           onTap: onTap,
-//           child: Container(
-//             decoration: BoxDecoration(
-//               color: selected ? Colors.white : const Color(0xFF1F2937),
-//               borderRadius: BorderRadius.circular(12),
-//             ),
-//             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-//             child: Row(
-//               children: [
-//                 Icon(icon, size: 20, color: selected ? Colors.black87 : Colors.white70),
-//                 const SizedBox(width: 12),
-//                 Text(
-//                   title,
-//                   style: TextStyle(
-//                     color: selected ? Colors.black87 : Colors.white,
-//                     fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       );
-//     }
-//
-//     return Drawer(
-//       width: 280,
-//       backgroundColor: ColorScheme.of(context).primary,
-//       child: SafeArea(
-//         top: false,
-//         child: Column(
-//           children: [
-//             const SizedBox(height: 8),
-//             ListTile(
-//               leading: const CircleAvatar(
-//                 backgroundColor: Color(0xFF374151),
-//                 child: Text('L', style: TextStyle(color: Colors.white)),
-//               ),
-//               title: const Text('Auratech',
-//                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800)),
-//               subtitle: Text('HRMS Platform', style: TextStyle(color: Colors.white.withOpacity(.7))),
-//             ),
-//             const SizedBox(height: 8),
-//             Expanded(
-//               child: SingleChildScrollView(
-//                 child: Column(
-//                   children: [
-//                     item(Icons.dashboard_outlined, 'Dashboard', selected: false, onTap: () {
-//                       Navigator.pop(context);
-//                     }),
-//                     item(Icons.groups_2_outlined, 'Employees',
-//                         onTap: () {
-//
-//                       Navigator.push(context, MaterialPageRoute(builder: (_) => AdminTeamView()));
-//                     }
-//                     ),
-//                     item(Icons.badge_outlined, 'Interns',onTap: () {
-//
-//                       Navigator.push(context, MaterialPageRoute(builder: (_) => Interns()));
-//                     }),
-//                     item(Icons.checklist_rtl, 'Tasks'),
-//                     item(Icons.schedule, 'Attendance',onTap: () {
-//
-//                       Navigator.push(context, MaterialPageRoute(builder: (_) => AdminAttendanceView()));
-//                     }),
-//                     item(Icons.payments_outlined, 'Payroll',onTap: () {
-//
-//                       Navigator.push(context, MaterialPageRoute(builder: (_) => Payroll()));
-//                     }),
-//                     item(Icons.bar_chart_outlined, 'Performance',onTap: () {
-//
-//                       Navigator.push(context, MaterialPageRoute(builder: (_) => Performance()));
-//                     }),
-//                     item(Icons.edit_document, 'Documents', onTap: () {
-//
-//                       Navigator.push(context, MaterialPageRoute(builder: (_) => Documents()));
-//                     }),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//             const SizedBox(height: 8),
-//             Padding(
-//               padding: const EdgeInsets.symmetric(horizontal: 10),
-//               child: Container(
-//                 decoration: BoxDecoration(
-//                   color: const Color(0xFF1F2937),
-//                   borderRadius: BorderRadius.circular(14),
-//                 ),
-//                 padding: const EdgeInsets.all(14),
-//                 child: Row(
-//                   children: [
-//                     const CircleAvatar(
-//                       backgroundColor: Color(0xFF374151),
-//                       child: Icon(Icons.person, color: Colors.white70),
-//                     ),
-//                     const SizedBox(width: 12),
-//                     Expanded(
-//                       child: Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: const [
-//                           Text('HR Manager', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
-//                           SizedBox(height: 2),
-//                           Text('hr@auratech.com', style: TextStyle(color: Colors.white70, fontSize: 12)),
-//                           SizedBox(height: 4),
-//                           Text('HR ADMIN',
-//                               style: TextStyle(color: Color(0xFF93C5FD), fontWeight: FontWeight.w700, fontSize: 12)),
-//                         ],
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//             const SizedBox(height: 8),
-//             item(Icons.logout, 'Logout', onTap: () => Navigator.pop(context)),
-//             const SizedBox(height: 10),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+
 
 
 class _AppDrawer extends StatelessWidget {
@@ -637,10 +502,8 @@ class _AppDrawer extends StatelessWidget {
 
 
   void _closeThen(VoidCallback go) {
-    // Drawer band karo
-    Get.back(); // same as Navigator.pop(context)
-    // Next microtask me navigation, taaki pop complete ho jaye
-    Future.microtask(go);
+     Get.back();
+     Future.microtask(go);
   }
 
 // Drawer item:
@@ -767,6 +630,11 @@ class _AppDrawer extends StatelessWidget {
                     }),
                     item(Icons.settings_outlined, 'Settings', onTap: () {
                       _closeThen(() => Get.toNamed(AppRoutes.adminseting));
+
+                    }),
+
+                    item(Icons.home_sharp, 'Admin Office', onTap: () {
+                      _closeThen(() => Get.toNamed(AppRoutes.adminoffice));
 
                     }),
                   ],

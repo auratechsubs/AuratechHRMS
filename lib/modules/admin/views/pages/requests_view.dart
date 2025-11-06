@@ -330,7 +330,7 @@ class StatusBadge extends StatelessWidget {
 }
 
 class _KeyVal extends StatelessWidget {
-  const _KeyVal(this.k, this.v, {super.key});
+  const _KeyVal(this.k, this.v);
   final String k, v;
 
   @override
