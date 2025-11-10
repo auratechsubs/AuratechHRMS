@@ -218,7 +218,7 @@ class AttendanceGeoController extends GetxController {
 
     final started = DateTime.now();
     await for (final p in stream) {
-      if (best == null || p.accuracy < best!.accuracy) {
+      if (best == null || p.accuracy < best.accuracy) {
         best = p;
       }
       final elapsed = DateTime.now().difference(started);
@@ -232,7 +232,7 @@ class AttendanceGeoController extends GetxController {
       desiredAccuracy: LocationAccuracy.best,
       timeLimit: const Duration(seconds: 15),
     );
-    return best!;
+    return best;
   }
 
   Future<GeoCheckResult> evaluateForCheckIn() async {

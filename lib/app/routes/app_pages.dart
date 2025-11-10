@@ -16,8 +16,10 @@ import '../../modules/attendance/views/mark_attendance_sheet.dart';
 import '../../modules/attendance/views/requests_view.dart';
 import '../../modules/attendance/views/reports_view.dart';
 import '../../modules/auth/views/login_view.dart';
+import '../../modules/auth/views/onboardingscreen.dart';
 import '../../modules/auth/views/organization_select_view.dart';
 import '../../modules/auth/views/permissions_view.dart';
+import '../../modules/auth/views/splashscreen.dart';
 import '../../modules/profile/views/profile_view.dart';
 import 'app_routes.dart';
 
@@ -48,5 +50,7 @@ class AppPages {
     GetPage(name: AppRoutes.adminreportsview, page: AdminReportsView.new),
     GetPage(name: AppRoutes.adminseting, page: AdminSettingsView.new),
     GetPage(name: AppRoutes.adminoffice, page: OfficeAdminPage.new),
+    GetPage(name: AppRoutes.splashscreen, page: SplashScreen.new),
+    GetPage(name: AppRoutes.Onboardingscreen, page: Onboardingscreen.new),
   ];
 }

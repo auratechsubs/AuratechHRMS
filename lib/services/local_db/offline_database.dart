@@ -8,12 +8,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../modules/attendance/models/attendance_models.dart';
 
-/// ========================
-/// INTERNAL DRIFT STUB DB
-/// ========================
-/// Ye chhota sa GeneratedDatabase hai jise hum sirf isliye use kar rahe hain
-/// taaki executor ko properly `ensureOpen()` kar sakein. Isme koi tables
-/// declare nahi ki ja rahi — schema hum raw SQL se bana rahe hain.
+
 class _StubDb extends GeneratedDatabase {
   _StubDb(super.e);
   @override

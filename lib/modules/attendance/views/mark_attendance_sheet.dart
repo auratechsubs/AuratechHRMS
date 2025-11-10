@@ -92,7 +92,7 @@ class MarkAttendanceSheet extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18),
         color: enabled ? colorScheme.surfaceContainerHighest.withOpacity(0.3) : null,
-        border: Border.all(color: colorScheme.outline.withOpacity(0.2)),
+        border: Border.all(color: colorScheme.primary.withOpacity(0.2)),
       ),
       child: Row(
         children: [

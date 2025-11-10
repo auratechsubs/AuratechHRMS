@@ -20,17 +20,7 @@ class EmployeeHomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     final AttendanceController controller = Get.find<AttendanceController>();
 
-    //  if (geo.offices.isEmpty) {
-    //   geo.addOffice(
-    //     const OfficeLocation(
-    //       id: 'Auratech Office',
-    //       name: 'Head Office',
-    //       latitude: 26.8446026,
-    //       longitude: 75.8117849,
-    //       radiusM: 50,
-    //     ),
-    //   );
-    // }
+
     return Obx(() {
       final employee = controller.primaryEmployee;
       final day = controller.todayRecord;
@@ -229,7 +219,7 @@ class EmployeeHomeView extends StatelessWidget {
       decoration: BoxDecoration(
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(28),
-        border: Border.all(color: colorScheme.outline.withOpacity(0.3)),
+        border: Border.all(color: colorScheme.primary.withOpacity(0.3),style: BorderStyle.solid,),
         boxShadow: [
           BoxShadow(
             color: colorScheme.shadow.withOpacity(0.1),

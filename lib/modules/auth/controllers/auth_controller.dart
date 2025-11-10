@@ -19,30 +19,30 @@ class AuthController extends GetxController {
 
   /// उपलब्ध डमी ऑर्गनाइज़ेशन लिस्ट।
   final List<OrganizationModel> organizations = <OrganizationModel>[
-    OrganizationModel(id: 'ptm', name: 'PulseTime HQ'),
+    OrganizationModel(id: 'ptm', name: 'Auratech HQ'),
     OrganizationModel(id: 'sat', name: 'Saturn Consulting'),
     OrganizationModel(id: 'nxt', name: 'NextEdge Retail'),
   ];
 
   /// डिफ़ॉल्ट एम्प्लॉयी जिसे पहली बार लॉगिन पर बनाया जाता है।
   EmployeeModel get defaultEmployee => EmployeeModel(
-        id: const Uuid().v4(),
-        code: 'PTM-1001',
-        name: 'Arjun Mehta',
-        department: 'Product',
-        role: 'Product Manager',
-        shift: ShiftModel(
-          id: 'general',
-          name: 'General Shift',
-          start: const TimeOfDay(hour: 9, minute: 30),
-          end: const TimeOfDay(hour: 18, minute: 30),
-          graceMinutes: 10,
-          breakPolicy: const BreakPolicy(maxBreaks: 3, paidBreaks: 1),
-          autoCheckoutTime: const TimeOfDay(hour: 20, minute: 0),
-        ),
-        managerName: 'Neha Sharma',
-        location: 'Gurugram HQ',
-      );
+    id: const Uuid().v4(),
+    code: 'PTM-1001',
+    name: 'Sohil Khan',
+    department: 'Application',
+    role: 'Software Engineer',
+    shift: ShiftModel(
+      id: 'general',
+      name: 'General Shift',
+      start: const TimeOfDay(hour: 9, minute: 30),
+      end: const TimeOfDay(hour: 18, minute: 30),
+      graceMinutes: 10,
+      breakPolicy: const BreakPolicy(maxBreaks: 3, paidBreaks: 1),
+      autoCheckoutTime: const TimeOfDay(hour: 20, minute: 0),
+    ),
+    managerName: 'Sona Sharma',
+    location: 'Jaipur HQ',
+  );
 
   /// उपयोगकर्ता द्वारा पहचान इनपुट करने पर सेव करना।
   void submitIdentifier(String identifier) {
@@ -53,8 +53,10 @@ class AuthController extends GetxController {
   /// ओटीपी को अपडेट करना।
   void updateOtp(String otp) {
     if (_credentials.value == null) return;
-    _credentials.value =
-        AuthCredentials(identifier: _credentials.value!.identifier, otp: otp);
+    _credentials.value = AuthCredentials(
+      identifier: _credentials.value!.identifier,
+      otp: otp,
+    );
   }
 
   /// संगठना चयन।

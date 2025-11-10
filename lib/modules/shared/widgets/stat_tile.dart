@@ -46,26 +46,26 @@ class StatTile extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(fontWeight: FontWeight.w600),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
                 ),
               ),
               if (badge != null)
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: colorScheme.tertiary,
                     borderRadius: BorderRadius.circular(999),
                   ),
                   child: Text(
                     badge!,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(color: colorScheme.onTertiary),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onTertiary,
+                    ),
                   ),
                 ),
             ],
@@ -73,10 +73,9 @@ class StatTile extends StatelessWidget {
           const SizedBox(height: 18),
           Text(
             value,
-            style: Theme.of(context)
-                .textTheme
-                .displayMedium
-                ?.copyWith(color: colorScheme.primary),
+            style: Theme.of(
+              context,
+            ).textTheme.displayMedium?.copyWith(color: colorScheme.primary),
           ),
         ],
       ),

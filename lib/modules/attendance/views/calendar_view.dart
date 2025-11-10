@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
+import 'package:pdf/widgets.dart' as pw;
+import 'package:pdf/pdf.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:open_filex/open_filex.dart';
+import 'dart:io';
 import '../controllers/attendance_controller.dart';
 import '../models/attendance_models.dart';
 
@@ -161,16 +165,97 @@ class CalendarView extends StatelessWidget {
                                       textAlign: TextAlign.center,
                                     ),
                                     const SizedBox(height: 30),
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: TextButton(
-                                        onPressed: () => Navigator.pop(context),
-                                        child: const Text(
-                                          "Close",
-                                          style: TextStyle(fontSize: 16),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+
+
+
+
+                                    TextButton(
+                                        onPressed: () async {
+                              print("Saving as PDF...");
+
+                              // 1. Create a new PDF document
+                              final pdf = pw.Document();
+
+                              // 2. Add page content (based on your dialog data)
+                              pdf.addPage(
+                              pw.Page(
+                              pageFormat: PdfPageFormat.a4,
+                              build: (pw.Context context) {
+                              return pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
+                              children: [
+                              pw.Center(
+                              child: pw.Text(
+                              'Attendance Details',
+                              style: pw.TextStyle(
+                              fontSize: 22,
+                              fontWeight: pw.FontWeight.bold,
+                              ),
+                              ),
+                              ),
+                              pw.SizedBox(height: 20),
+                              pw.Text('Selected Date: ${dayDate.day}-${dayDate.month}-${dayDate.year}'),
+                              pw.Text('Checked In Time: $formattedCheckIn'),
+                              pw.Text('Checked Out Time: $formattedCheckOut'),
+                              pw.Text('Break Entries: $breakStartTimes'),
+                              pw.Text('Status: ${_statusLabel(status)}'),
+                              ],
+                              );
+                              },
+                              ),
+                              );
+
+                              // 3. Save the PDF to local storage
+                              final dir = await getApplicationDocumentsDirectory();
+                              final file = File('${dir.path}/attendance_${dayDate.day}_${dayDate.month}_${dayDate.year}.pdf');
+                              await file.writeAsBytes(await pdf.save());
+
+                              // 4. Open the saved PDF
+                              await OpenFilex.open(file.path);
+
+                              print('PDF saved to: ${file.path}');
+                              },
+                                child: const Text(
+                                  "Save as PDF",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ),
+
+                              // TextButton(
+                                        //   onPressed: (){
+                                        //     print("Saving as PDF...");
+                                        //     // Implement PDF saving functionality here
+                                        //
+                                        //   },
+                                        //   child: const Text(
+                                        //     "Save as pdf",
+                                        //     style: TextStyle(fontSize: 16),
+                                        //   ),
+                                        // ),
+                                        TextButton(
+                                          onPressed: () => Navigator.pop(context),
+                                          child: const Text(
+                                            "Close",
+                                            style: TextStyle(fontSize: 16),
+                                          ),
                                         ),
-                                      ),
-                                    ),
+
+                                      ],
+                                    )
+                                    // Align(
+                                    //   alignment: Alignment.centerRight,
+                                    //   child:
+                                    //   TextButton(
+                                    //     onPressed: () => Navigator.pop(context),
+                                    //     child: const Text(
+                                    //       "Close",
+                                    //       style: TextStyle(fontSize: 16),
+                                    //     ),
+                                    //   ),
+                                    // ),
                                   ],
                                 ),
                               ),

@@ -306,7 +306,7 @@ class _ReportCard extends StatelessWidget {
                   ),
                 ),
                 FilledButton.tonalIcon(
-                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(cs.primary,),fixedSize: MaterialStateProperty.all(const Size(100, 36)),padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 8)),),
+                  style: ButtonStyle(backgroundColor: WidgetStateProperty.all(cs.primary,),fixedSize: WidgetStateProperty.all(const Size(100, 36)),padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 8)),),
                   onPressed: onExportRow,
                   icon: const Icon(Icons.download_outlined),
                   label: const Text('Export'),

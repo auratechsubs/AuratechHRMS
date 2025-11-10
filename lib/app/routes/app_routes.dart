@@ -22,4 +22,6 @@ abstract class AppRoutes {
   static const String adminreportsview = '/adminreportsview';
   static const String adminseting = '/adminseting';
   static const String adminoffice = '/adminoffice';
+  static const String splashscreen = '/splashscreen';
+  static const String Onboardingscreen = '/Onboardingscreen';
 }

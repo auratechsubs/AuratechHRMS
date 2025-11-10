@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:open_filex/open_filex.dart';
+ import 'package:path_provider/path_provider.dart';
 
 import '../../../services/storage_service.dart';
 import '../../attendance/models/attendance_models.dart';
@@ -123,7 +123,7 @@ class ProfileController extends GetxController {
     try {
       final file = File(doc.filePath);
       if (await file.exists()) {
-        await OpenFile.open(file.path);
+        await OpenFilex.open(file.path);
       } else {
         Get.snackbar('Error', 'File not found');
       }
@@ -150,7 +150,7 @@ class ProfileController extends GetxController {
       // यहाँ slip.filePath के आधार पर open करें या API से डाउनलोड करें
       final file = File(slip.filePath);
       if (await file.exists()) {
-        await OpenFile.open(file.path);
+        await OpenFilex.open(file.path);
       } else {
         Get.snackbar('Error', 'Salary slip file not found');
       }

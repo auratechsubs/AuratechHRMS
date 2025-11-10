@@ -35,6 +35,19 @@ class LoginView extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 const SizedBox(height: 32),
+                Center(
+                  child: CircleAvatar(
+                    radius: 55,
+                    backgroundColor: Colors.white,
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage("assets/icons/logo.png"),
+                      radius: 45
+                      ,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 32),
+
                 TextField(
                   controller: _identifierController,
                   decoration: InputDecoration(

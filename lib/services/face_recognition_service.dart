@@ -5,6 +5,6 @@ class FaceRecognitionService extends GetxService {
   /// वर्तमान कंटेनर में कैमरा उपलब्ध नहीं, इसलिए यहां डेमो वैलिडेशन।
   Future<bool> captureAndValidateFace() async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
-    return true; // रियल डिवाइस पर ML Kit इंटीग्रेशन लगाया जाएगा।
+    return true;
   }
 }

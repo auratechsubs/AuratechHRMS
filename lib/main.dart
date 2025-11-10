@@ -73,7 +73,7 @@ class AttendanceApp extends StatelessWidget {
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.system,
       getPages: AppPages.pages,
-      initialRoute: AppRoutes.login,
+      initialRoute: AppRoutes.splashscreen,
     );
   }
 }
